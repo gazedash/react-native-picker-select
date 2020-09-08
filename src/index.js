@@ -56,6 +56,7 @@ export default class RNPickerSelect extends PureComponent {
         // Custom Icon
         Icon: PropTypes.func,
         InputAccessoryView: PropTypes.func,
+        modalEnabled: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -83,6 +84,7 @@ export default class RNPickerSelect extends PureComponent {
         touchableWrapperProps: {},
         Icon: null,
         InputAccessoryView: null,
+        modalEnabled: true,
     };
 
     static handlePlaceholder({ placeholder }) {
@@ -415,8 +417,10 @@ export default class RNPickerSelect extends PureComponent {
     }
 
     renderIOS() {
-        const { style, modalProps, pickerProps, touchableWrapperProps } = this.props;
+        const { style, modalProps, pickerProps, touchableWrapperProps, modalEnabled } = this.props;
         const { animationType, orientation, selectedItem, showPicker } = this.state;
+        
+        const ModalWrapper = modalEnabled ? Modal : React.Fragment;
 
         return (
             <View style={[defaultStyles.viewContainer, style.viewContainer]}>
@@ -430,7 +434,7 @@ export default class RNPickerSelect extends PureComponent {
                 >
                     {this.renderTextInputOrChildren()}
                 </TouchableOpacity>
-                <Modal
+                <ModalWrapper
                     testID="ios_modal"
                     visible={showPicker}
                     transparent
@@ -463,7 +467,7 @@ export default class RNPickerSelect extends PureComponent {
                             {this.renderPickerItems()}
                         </Picker>
                     </View>
-                </Modal>
+                </ModalWrapper>
             </View>
         );
     }
